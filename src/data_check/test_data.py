@@ -87,3 +87,29 @@ def test_similar_neigh_distrib(data: pd.DataFrame, ref_data: pd.DataFrame, kl_th
 ########################################################
 # Implement here test_row_count and test_price_range   #
 ########################################################
+
+def test_row_count(data: pd.DataFrame) -> None:
+    """
+    Test that the dataset has a reasonable number of rows.
+
+    This is mainly to catch cases where we accidentally load
+    an empty / truncated file.
+    """
+    # The full NYC Airbnb dataset has tens of thousands of rows.
+    # This assertion just enforces "large enough" but not absurdly huge.
+    assert 15_000 < data.shape[0] < 1_000_000
+
+
+def test_price_range(data: pd.DataFrame, min_price: float, max_price: float) -> None:
+    """
+    Test that all prices fall within the configured range.
+
+    Args:
+        data: Current dataset to test
+        min_price: Minimum allowed price (from CLI / Hydra)
+        max_price: Maximum allowed price (from CLI / Hydra)
+    """
+    prices = data["price"]
+
+    # All prices must be between min_price and max_price (inclusive)
+    assert prices.between(min_price, max_price).all()
