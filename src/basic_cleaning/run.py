@@ -34,7 +34,15 @@ def go(args):
     # Only implement this step when reaching Step 6: Pipeline Release and Updates
     # in the project.
     # Add longitude and latitude filter to allow test_proper_boundaries to pass
-    # ENTER CODE HERE
+
+
+    # Keep only properties within NYC bounding box
+    min_long, max_long = -74.25, -73.50
+    min_lat, max_lat = 40.5, 41.2
+
+    geo_mask = df["longitude"].between(min_long, max_long) & df["latitude"].between(min_lat, max_lat)
+    df = df.loc[geo_mask].copy()
+
 
     # Save the cleaned data
     df.to_csv('clean_sample.csv',index=False)
