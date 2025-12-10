@@ -13,7 +13,21 @@ logger = logging.getLogger()
 
 # DO NOT MODIFY
 def go(args):
+    """
+    Run the basic cleaning step on the raw Airbnb dataset.
 
+    Parameters
+    ----------
+    args : argparse.Namespace
+        Command-line arguments with the following attributes:
+        - input_artifact (str): Name of the raw data artifact in W&B
+        - output_artifact (str): Name of the cleaned data artifact to create in W&B
+        - output_type (str): Type of the cleaned data artifact (e.g. "clean_data")
+        - output_description (str): Short description of the cleaned data artifact
+        - min_price (float): Minimum allowed listing price (rows below are dropped)
+        - max_price (float): Maximum allowed listing price (rows above are dropped)
+    """
+    
     run = wandb.init(job_type="basic_cleaning")
     run.config.update(args)
 
